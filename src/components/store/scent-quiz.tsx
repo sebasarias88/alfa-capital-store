@@ -100,11 +100,12 @@ export function ScentQuiz() {
           <div className="mx-auto mt-6 flex max-w-xs gap-2" aria-label={`Pregunta ${step + 1} de ${QUESTIONS.length}`}>
             {QUESTIONS.map((_, i) => (
               <span key={i} className="h-1 flex-1 overflow-hidden rounded-full bg-line">
-                <motion.span className="block h-full bg-gold" initial={false} animate={{ width: i < step ? "100%" : i === step ? "50%" : "0%" }} />
+                <motion.span className="block h-full rounded-full bg-gold" initial={false} animate={{ width: i < step ? "100%" : "0%" }} transition={{ duration: 0.45, ease: "easeOut" }} />
               </span>
             ))}
           </div>
         )}
+        {!done && <p className="mt-3 text-xs tracking-[0.2em] text-muted uppercase">Pregunta {step + 1} de {QUESTIONS.length}</p>}
       </div>
 
       <AnimatePresence mode="wait">
