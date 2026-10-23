@@ -9,6 +9,7 @@ import { useCartStore } from "@/store/cart-store";
 import { useCartSummary } from "@/store/use-cart-summary";
 import { useHydrated } from "@/components/store-hydrator";
 import { ProductMedia } from "@/components/product-media";
+import { Select } from "@/components/ui/select";
 import { NEIGHBORHOODS, PAYMENT_LABEL } from "@/lib/labels";
 import { cn, formatPrice } from "@/lib/format";
 import { orderMessage, waLink } from "@/lib/whatsapp";
@@ -21,6 +22,7 @@ export function Checkout() {
   const addOrder = useAppStore((s) => s.addOrder);
   const clear = useCartStore((s) => s.clear);
   const [payment, setPayment] = useState<PaymentMethod>("cash");
+  const [neighborhood, setNeighborhood] = useState("");
   const [placed, setPlaced] = useState<Order | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -103,7 +105,7 @@ export function Checkout() {
   return (
     <div className="mx-auto max-w-6xl px-4 pt-10 pb-24 sm:px-6 sm:pt-16">
       <p className="eyebrow">Último paso</p>
-      <h1 className="mt-3 font-[family-name:var(--font-display)] text-5xl sm:text-6xl">Finalizar pedido</h1>
+      <h1 className="mt-3 font-[family-name:var(--font-display)] text-4xl sm:text-6xl">Finalizar pedido</h1>
 
       <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_400px]">
         <form id="checkout" onSubmit={onSubmit} noValidate className="space-y-8">
@@ -123,11 +125,14 @@ export function Checkout() {
               </div>
               <div>
                 <label htmlFor="neighborhood" className="label">Barrio</label>
-                <select id="neighborhood" name="neighborhood" defaultValue="" className={cn(field("neighborhood"), "cursor-pointer")}>
-                  <option value="" disabled>Selecciona…</option>
-                  {NEIGHBORHOODS.map((n) => <option key={n}>{n}</option>)}
-                  <option>Otro</option>
-                </select>
+<Select
+                  id="neighborhood"
+                  name="neighborhood"
+                  value={neighborhood}
+                  onChange={setNeighborhood}
+                  invalid={!!errors.neighborhood}
+                  options={[...NEIGHBORHOODS, "Otro"].map((n) => ({ value: n, label: n }))}
+                />
                 {errors.neighborhood && <p className="mt-1 text-xs text-danger">{errors.neighborhood}</p>}
               </div>
               <div className="sm:col-span-2">

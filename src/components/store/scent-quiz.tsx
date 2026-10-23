@@ -117,7 +117,7 @@ export function ScentQuiz() {
             transition={{ duration: 0.35 }}
             className="relative mt-10"
           >
-            <h1 className="text-center font-[family-name:var(--font-display)] text-5xl sm:text-6xl">{q.title}</h1>
+            <h1 className="text-center font-[family-name:var(--font-display)] text-4xl sm:text-6xl">{q.title}</h1>
             <div className={cn("mx-auto mt-12 grid gap-4", q.options.length === 4 ? "max-w-3xl sm:grid-cols-2" : "max-w-4xl sm:grid-cols-3")}>
               {q.options.map((o, i) => (
                 <motion.button
@@ -150,7 +150,7 @@ export function ScentQuiz() {
           </motion.div>
         ) : (
           <motion.div key="results" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="relative mt-8">
-            <h1 className="text-center font-[family-name:var(--font-display)] text-5xl sm:text-6xl">
+            <h1 className="text-center font-[family-name:var(--font-display)] text-4xl sm:text-6xl">
               Tus aromas <span className="text-gold-gradient italic">ideales</span>
             </h1>
             <p className="mt-4 text-center text-muted">Seleccionados según tu estilo. Cualquiera de estos te va a encantar.</p>
