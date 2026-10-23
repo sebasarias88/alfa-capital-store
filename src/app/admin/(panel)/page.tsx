@@ -76,7 +76,25 @@ export default function DashboardPage() {
           {pending.length === 0 ? (
             <p className="py-8 text-center text-sm text-muted">Todo al día ✨</p>
           ) : (
-            <div className="-mx-5 overflow-x-auto sm:-mx-6">
+            <>
+            <ul className="space-y-2 md:hidden">
+              {pending.slice(0, 6).map((o) => (
+                <li key={o.id}>
+                  <Link href={`/admin/orders?id=${o.id}`} className="flex items-center justify-between gap-3 rounded-xl border border-line p-3 active:bg-raised">
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-gold-bright">{o.id}</p>
+                      <p className="truncate text-sm">{o.customer.name}</p>
+                      <p className="text-xs text-faint">{o.customer.neighborhood} · {formatDateTime(o.createdAt)}</p>
+                    </div>
+                    <div className="flex shrink-0 flex-col items-end gap-1.5">
+                      <span className="text-sm font-semibold">{formatPrice(o.total)}</span>
+                      <StatusBadge status={o.status} />
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <div className="relative -mx-5 hidden overflow-x-auto sm:-mx-6 md:block">
               <table className="w-full min-w-[560px] text-sm">
                 <thead>
                   <tr className="text-left text-xs text-faint">
@@ -104,6 +122,7 @@ export default function DashboardPage() {
                 </tbody>
               </table>
             </div>
+            </>
           )}
         </Card>
 

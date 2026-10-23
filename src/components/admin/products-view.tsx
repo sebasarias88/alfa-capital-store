@@ -13,11 +13,42 @@ import { CATEGORY_LABEL, GENDER_LABEL } from "@/lib/labels";
 import { cn, formatPrice } from "@/lib/format";
 import type { Category, Product } from "@/lib/types";
 
+function StockStepper({ product, threshold }: { product: Product; threshold: number }) {
+  const upsert = useAppStore((s) => s.upsertProduct);
+  return (
+    <div className="flex items-center gap-1">
+      <button type="button" aria-label={`Restar stock de ${product.name}`} onClick={() => upsert({ ...product, stock: Math.max(0, product.stock - 1) })} className="grid size-8 place-items-center rounded-lg border border-line text-muted hover:text-cream">
+        <Minus className="size-3.5" />
+      </button>
+      <span className={cn("w-8 text-center text-sm font-semibold", product.stock === 0 ? "text-danger" : product.stock <= threshold ? "text-warning" : "")}>{product.stock}</span>
+      <button type="button" aria-label={`Sumar stock de ${product.name}`} onClick={() => upsert({ ...product, stock: product.stock + 1 })} className="grid size-8 place-items-center rounded-lg border border-line text-muted hover:text-cream">
+        <Plus className="size-3.5" />
+      </button>
+    </div>
+  );
+}
+
+function VisibleSwitch({ product }: { product: Product }) {
+  const toggle = useAppStore((s) => s.toggleProduct);
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={product.active}
+      aria-label={`${product.active ? "Ocultar" : "Mostrar"} ${product.name} en la tienda`}
+      onClick={() => toggle(product.id)}
+      className={cn("relative h-6 w-11 shrink-0 rounded-full transition", product.active ? "bg-gold" : "bg-line")}
+    >
+      <span className={cn("absolute top-0.5 grid size-5 place-items-center rounded-full bg-ink transition-all", product.active ? "left-[22px]" : "left-0.5")}>
+        {product.active ? <Eye className="size-3 text-gold" /> : <EyeOff className="size-3 text-faint" />}
+      </span>
+    </button>
+  );
+}
+
 export function ProductsView() {
   const params = useSearchParams();
   const products = useAppStore((s) => s.products);
-  const upsert = useAppStore((s) => s.upsertProduct);
-  const toggle = useAppStore((s) => s.toggleProduct);
   const threshold = useAppStore((s) => s.settings.lowStockThreshold);
   const [q, setQ] = useState("");
   const [category, setCategory] = useState<Category | "all">("all");
@@ -70,7 +101,37 @@ export function ProductsView() {
           </div>
         </div>
 
-        <div className="-mx-5 overflow-x-auto sm:-mx-6">
+        <ul className="space-y-2 md:hidden">
+          {list.map((p) => (
+            <li key={p.id} className={cn("rounded-xl border border-line p-3", !p.active && "opacity-60")}>
+              <div className="flex gap-3">
+                <div className="size-16 shrink-0 overflow-hidden rounded-xl bg-raised p-0.5"><ProductMedia product={p} /></div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-start justify-between gap-2">
+                    <p className="flex min-w-0 items-center gap-1.5 font-medium">
+                      <span className="truncate">{p.name}</span>
+                      {p.featured && <Star className="size-3.5 shrink-0 fill-gold text-gold" aria-label="Destacado" />}
+                    </p>
+                    <button type="button" onClick={() => setEditing(p)} aria-label={`Editar ${p.name}`} className="grid size-8 shrink-0 place-items-center rounded-full border border-line text-muted hover:text-gold-bright">
+                      <Pencil className="size-3.5" />
+                    </button>
+                  </div>
+                  <p className="text-xs text-faint">{CATEGORY_LABEL[p.category]} · {GENDER_LABEL[p.gender]}</p>
+                  <div className="mt-1.5 flex flex-wrap items-center gap-2">
+                    <EditionBadge edition={p.edition} />
+                    <span className="text-sm font-semibold">{formatPrice(p.price)}</span>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-3 flex items-center justify-between border-t border-line pt-3">
+                <div className="flex items-center gap-2 text-xs text-muted">Stock <StockStepper product={p} threshold={threshold} /></div>
+                <div className="flex items-center gap-2 text-xs text-muted">Visible <VisibleSwitch product={p} /></div>
+              </div>
+            </li>
+          ))}
+        </ul>
+        {list.length === 0 && <p className="py-12 text-center text-sm text-muted md:hidden">No hay productos con estos filtros.</p>}
+        <div className="relative -mx-5 hidden overflow-x-auto sm:-mx-6 md:block">
           <table className="w-full min-w-[760px] text-sm">
             <thead>
               <tr className="border-b border-line text-left text-xs text-faint">
@@ -101,31 +162,8 @@ export function ProductsView() {
                     <p className="font-semibold">{formatPrice(p.price)}</p>
                     {p.compareAt && <p className="text-xs text-faint line-through">{formatPrice(p.compareAt)}</p>}
                   </td>
-                  <td className="py-3">
-                    <div className="flex items-center gap-1">
-                      <button type="button" aria-label={`Restar stock de ${p.name}`} onClick={() => upsert({ ...p, stock: Math.max(0, p.stock - 1) })} className="grid size-8 place-items-center rounded-lg border border-line text-muted hover:text-cream">
-                        <Minus className="size-3.5" />
-                      </button>
-                      <span className={cn("w-9 text-center font-semibold", p.stock === 0 ? "text-danger" : p.stock <= threshold ? "text-warning" : "")}>{p.stock}</span>
-                      <button type="button" aria-label={`Sumar stock de ${p.name}`} onClick={() => upsert({ ...p, stock: p.stock + 1 })} className="grid size-8 place-items-center rounded-lg border border-line text-muted hover:text-cream">
-                        <Plus className="size-3.5" />
-                      </button>
-                    </div>
-                  </td>
-                  <td className="py-3">
-                    <button
-                      type="button"
-                      role="switch"
-                      aria-checked={p.active}
-                      aria-label={`${p.active ? "Ocultar" : "Mostrar"} ${p.name} en la tienda`}
-                      onClick={() => toggle(p.id)}
-                      className={cn("relative h-6 w-11 rounded-full transition", p.active ? "bg-gold" : "bg-line")}
-                    >
-                      <span className={cn("absolute top-0.5 grid size-5 place-items-center rounded-full bg-ink transition-all", p.active ? "left-[22px]" : "left-0.5")}>
-                        {p.active ? <Eye className="size-3 text-gold" /> : <EyeOff className="size-3 text-faint" />}
-                      </span>
-                    </button>
-                  </td>
+                  <td className="py-3"><StockStepper product={p} threshold={threshold} /></td>
+                  <td className="py-3"><VisibleSwitch product={p} /></td>
                   <td className="px-5 py-3 text-right sm:px-6">
                     <button type="button" onClick={() => setEditing(p)} className="inline-flex items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-xs text-muted hover:border-gold/50 hover:text-gold-bright">
                       <Pencil className="size-3.5" /> Editar

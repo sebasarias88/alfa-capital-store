@@ -84,28 +84,16 @@ export default function ReportsPage() {
       </div>
 
       <Card title="Ranking de productos" className="mt-4">
-        <div className="-mx-5 overflow-x-auto sm:-mx-6">
-          <table className="w-full min-w-[520px] text-sm">
-            <thead>
-              <tr className="border-b border-line text-left text-xs text-faint">
-                <th className="px-5 pb-3 font-medium sm:px-6">#</th>
-                <th className="pb-3 font-medium">Producto</th>
-                <th className="pb-3 text-right font-medium">Unidades</th>
-                <th className="px-5 pb-3 text-right font-medium sm:px-6">Ingresos</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-line">
-              {r.top.map((t, i) => (
-                <tr key={t.productId}>
-                  <td className="px-5 py-3 text-faint sm:px-6">{i + 1}</td>
-                  <td className="py-3">{t.name}</td>
-                  <td className="py-3 text-right">{t.units}</td>
-                  <td className="px-5 py-3 text-right font-semibold sm:px-6">{formatPrice(t.revenue)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <ol className="divide-y divide-line">
+          {r.top.map((t, i) => (
+            <li key={t.productId} className="flex items-center gap-3 py-3 text-sm">
+              <span className="w-5 shrink-0 text-faint">{i + 1}</span>
+              <span className="min-w-0 flex-1 truncate">{t.name}</span>
+              <span className="shrink-0 text-xs text-muted">{t.units} und.</span>
+              <span className="w-28 shrink-0 text-right font-semibold">{formatPrice(t.revenue)}</span>
+            </li>
+          ))}
+        </ol>
       </Card>
     </>
   );
