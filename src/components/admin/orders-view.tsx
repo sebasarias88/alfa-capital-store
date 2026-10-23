@@ -41,7 +41,7 @@ function OrderDrawer({ order, onClose }: { order: Order; onClose: () => void }) 
         exit={{ x: "100%" }}
         transition={{ type: "spring", damping: 30, stiffness: 280 }}
       >
-        <div className="flex items-start justify-between border-b border-line p-6">
+        <div className="flex items-start justify-between border-b border-line p-5 sm:p-6">
           <div>
             <p className="text-xs text-faint">{formatDateTime(order.createdAt)} · {CHANNEL_LABEL[order.channel]}</p>
             <h2 className="mt-1 font-[family-name:var(--font-display)] text-3xl">Pedido {order.id}</h2>
@@ -51,11 +51,11 @@ function OrderDrawer({ order, onClose }: { order: Order; onClose: () => void }) 
             <X className="size-5" />
           </button>
         </div>
-        <div className="flex-1 space-y-6 overflow-y-auto p-6">
+        <div className="flex-1 space-y-6 overflow-y-auto p-5 sm:p-6">
           {order.status !== "cancelled" && (
             <div>
               <p className="label">Estado del pedido</p>
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                 {FLOW.map((s, i) => (
                   <button
                     key={s}
@@ -104,7 +104,7 @@ function OrderDrawer({ order, onClose }: { order: Order; onClose: () => void }) 
             {order.notes && <p className="mt-4 rounded-xl bg-raised p-3 text-sm text-muted">📝 {order.notes}</p>}
           </div>
         </div>
-        <div className="flex gap-2 border-t border-line p-4">
+        <div className="flex flex-col-reverse gap-2 border-t border-line p-4 sm:flex-row">
           {order.status !== "cancelled" && order.status !== "delivered" && (
             <button type="button" onClick={() => setStatus(order.id, "cancelled")} className="btn-ghost flex-1 py-3 hover:border-danger hover:text-danger">
               Cancelar pedido
@@ -193,7 +193,30 @@ export function OrdersView() {
           <Search className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-faint" />
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscar por pedido, cliente, teléfono o barrio…" aria-label="Buscar pedidos" className="input pl-11" />
         </div>
-        <div className="-mx-5 overflow-x-auto sm:-mx-6">
+        <ul className="space-y-2 md:hidden">
+          {list.slice(0, limit).map((o) => (
+            <li key={o.id}>
+              <button type="button" onClick={() => setSelectedId(o.id)} className="w-full rounded-xl border border-line p-3 text-left active:bg-raised">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-gold-bright">{o.id}</p>
+                    <p className="truncate text-sm">{o.customer.name}</p>
+                    <p className="text-xs text-faint">{o.customer.neighborhood} · {formatDateTime(o.createdAt)}</p>
+                  </div>
+                  <div className="flex shrink-0 flex-col items-end gap-1.5">
+                    <span className="text-sm font-semibold">{formatPrice(o.total)}</span>
+                    <StatusBadge status={o.status} />
+                  </div>
+                </div>
+                <p className="mt-2 truncate border-t border-line pt-2 text-xs text-muted">
+                  {o.items.map((it) => `${it.qty}× ${it.name}`).join(", ")} · {PAYMENT_LABEL[o.payment]}
+                </p>
+              </button>
+            </li>
+          ))}
+        </ul>
+        {list.length === 0 && <p className="py-12 text-center text-sm text-muted md:hidden">No hay pedidos con estos filtros.</p>}
+        <div className="relative -mx-5 hidden overflow-x-auto sm:-mx-6 md:block">
           <table className="w-full min-w-[720px] text-sm">
             <thead>
               <tr className="border-b border-line text-left text-xs text-faint">
