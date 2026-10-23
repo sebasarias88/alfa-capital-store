@@ -41,11 +41,13 @@
 }
 
 html {
+  overflow-x: clip;
   scroll-behavior: smooth;
   -webkit-tap-highlight-color: transparent;
 }
 
 body {
+  overflow-x: clip;
   background: var(--color-ink);
   color: var(--color-cream);
   font-family: var(--font-sans);

@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { useAppStore } from "@/store/app-store";
 import { ProductCard } from "./product-card";
+import { Select } from "@/components/ui/select";
 import { CATEGORY_LABEL, EDITION_LABEL, FAMILY_LABEL, GENDER_LABEL } from "@/lib/labels";
 import { cn } from "@/lib/format";
 import type { Category, Edition, Gender, ScentFamily } from "@/lib/types";
@@ -118,7 +119,7 @@ export function CatalogView() {
     <div className="mx-auto max-w-7xl px-4 pt-10 pb-24 sm:px-6 sm:pt-16">
       <div className="flex flex-col gap-2">
         <p className="eyebrow">Catálogo</p>
-        <h1 className="font-[family-name:var(--font-display)] text-5xl sm:text-7xl">{title}</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-4xl sm:text-7xl">{title}</h1>
       </div>
 
       <div className="no-scrollbar -mx-4 mt-8 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:px-0">
@@ -151,15 +152,14 @@ export function CatalogView() {
           <button type="button" onClick={() => setFiltersOpen(true)} className="btn-ghost flex-1 px-5 py-3 lg:hidden">
             <SlidersHorizontal className="size-4" /> Filtros {activeCount > 0 && <span className="rounded-full bg-gold px-1.5 text-xs text-ink">{activeCount}</span>}
           </button>
-          <label className="relative flex-1 sm:flex-none">
-            <span className="sr-only">Ordenar</span>
-            <select value={sort} onChange={(e) => setParam("sort", e.target.value === "featured" ? null : e.target.value)} className="input cursor-pointer appearance-none rounded-full pr-10">
-              {(Object.keys(SORT_LABEL) as Sort[]).map((s) => (
-                <option key={s} value={s}>{SORT_LABEL[s]}</option>
-              ))}
-            </select>
-            <span className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-xs text-faint">▼</span>
-          </label>
+          <Select
+            ariaLabel="Ordenar"
+            value={sort}
+            onChange={(v) => setParam("sort", v === "featured" ? null : v)}
+            options={(Object.keys(SORT_LABEL) as Sort[]).map((s) => ({ value: s, label: SORT_LABEL[s] }))}
+            className="flex-1 sm:w-48 sm:flex-none"
+            buttonClassName="rounded-full"
+          />
         </div>
       </div>
 
