@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import { ImagePlus, Trash2, X } from "lucide-react";
 import { useAppStore } from "@/store/app-store";
 import { ProductMedia } from "@/components/product-media";
+import { Select } from "@/components/ui/select";
 import { CATEGORY_LABEL, EDITION_LABEL, FAMILY_LABEL, GENDER_LABEL, OCCASION_LABEL } from "@/lib/labels";
 import { cn } from "@/lib/format";
 import { fileToWebp } from "@/lib/image";
@@ -161,29 +162,23 @@ export function ProductEditor({ product, onClose }: { product: Product | null; o
               <div className="grid gap-4 sm:grid-cols-3">
                 <div>
                   <label htmlFor="pe-cat" className="label">Categoría</label>
-                  <select
+                  <Select
                     id="pe-cat"
                     value={draft.category}
-                    onChange={(e) => {
-                      const c = e.target.value as Category;
+                    onChange={(v) => {
+                      const c = v as Category;
                       setDraft((d) => ({ ...d, category: c, art: d.category === c ? d.art : DEFAULT_ART[c] }));
                     }}
-                    className="input"
-                  >
-                    {(Object.keys(CATEGORY_LABEL) as Category[]).map((c) => <option key={c} value={c}>{CATEGORY_LABEL[c]}</option>)}
-                  </select>
+                    options={(Object.keys(CATEGORY_LABEL) as Category[]).map((c) => ({ value: c, label: CATEGORY_LABEL[c] }))}
+                  />
                 </div>
                 <div>
                   <label htmlFor="pe-gender" className="label">Para</label>
-                  <select id="pe-gender" value={draft.gender} onChange={(e) => set("gender", e.target.value as Gender)} className="input">
-                    {(Object.keys(GENDER_LABEL) as Gender[]).map((g) => <option key={g} value={g}>{GENDER_LABEL[g]}</option>)}
-                  </select>
+                  <Select id="pe-gender" value={draft.gender} onChange={(v) => set("gender", v as Gender)} options={(Object.keys(GENDER_LABEL) as Gender[]).map((g) => ({ value: g, label: GENDER_LABEL[g] }))} />
                 </div>
                 <div>
                   <label htmlFor="pe-ed" className="label">Tipo</label>
-                  <select id="pe-ed" value={draft.edition} onChange={(e) => set("edition", e.target.value as Edition)} className="input">
-                    {(Object.keys(EDITION_LABEL) as Edition[]).map((ed) => <option key={ed} value={ed}>{EDITION_LABEL[ed]}</option>)}
-                  </select>
+                  <Select id="pe-ed" value={draft.edition} onChange={(v) => set("edition", v as Edition)} options={(Object.keys(EDITION_LABEL) as Edition[]).map((ed) => ({ value: ed, label: EDITION_LABEL[ed] }))} />
                 </div>
               </div>
 
@@ -217,9 +212,7 @@ export function ProductEditor({ product, onClose }: { product: Product | null; o
                     </div>
                     <div>
                       <label htmlFor="pe-family" className="label">Familia</label>
-                      <select id="pe-family" value={draft.family ?? ""} onChange={(e) => set("family", e.target.value as ScentFamily)} className="input">
-                        {(Object.keys(FAMILY_LABEL) as ScentFamily[]).map((f) => <option key={f} value={f}>{FAMILY_LABEL[f]}</option>)}
-                      </select>
+                      <Select id="pe-family" value={draft.family ?? "woody"} onChange={(v) => set("family", v as ScentFamily)} options={(Object.keys(FAMILY_LABEL) as ScentFamily[]).map((f) => ({ value: f, label: FAMILY_LABEL[f] }))} />
                     </div>
                   </div>
                   {(["top", "heart", "base"] as const).map((tier) => (

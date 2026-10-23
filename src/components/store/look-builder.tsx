@@ -30,7 +30,7 @@ export function LookBuilder() {
     <div className="mx-auto max-w-7xl px-4 pt-10 pb-40 sm:px-6 sm:pt-16 lg:pb-24">
       <div className="max-w-2xl">
         <p className="eyebrow flex items-center gap-2"><Sparkles className="size-3.5" /> Combo exclusivo web</p>
-        <h1 className="mt-4 font-[family-name:var(--font-display)] text-5xl sm:text-7xl">
+        <h1 className="mt-4 font-[family-name:var(--font-display)] text-4xl sm:text-7xl">
           Arma tu <span className="text-gold-gradient italic">look</span>
         </h1>
         <p className="mt-4 text-muted">

@@ -27,7 +27,7 @@ export function Featured() {
       <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
         <div>
           <p className="eyebrow">Lo más pedido</p>
-          <h2 className="mt-4 font-[family-name:var(--font-display)] text-5xl sm:text-6xl">
+          <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl sm:text-6xl">
             Favoritos de <span className="text-gold-gradient italic">la casa</span>
           </h2>
         </div>

@@ -26,13 +26,13 @@ export function QuizCta() {
     <section className="px-4 sm:px-6">
       <motion.div
         {...reveal}
-        className="grain relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] border border-gold/20 bg-gradient-to-br from-raised via-surface to-coal px-6 py-16 sm:px-14 sm:py-20"
+        className="grain relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] border border-gold/20 bg-gradient-to-br from-raised via-surface to-coal px-5 py-12 sm:px-14 sm:py-20"
       >
         <div aria-hidden className="absolute -top-24 -right-24 size-96 rounded-full bg-gold/15 blur-[100px]" />
-        <div className="relative grid items-center gap-12 lg:grid-cols-2">
+        <div className="relative grid grid-cols-1 items-center gap-10 lg:grid-cols-2 [&>*]:min-w-0">
           <div>
             <p className="eyebrow flex items-center gap-2"><Sparkles className="size-3.5" /> Asesor de aromas</p>
-            <h2 className="mt-5 font-[family-name:var(--font-display)] text-5xl leading-[1] sm:text-6xl">
+            <h2 className="mt-5 font-[family-name:var(--font-display)] text-4xl leading-[1.05] sm:text-6xl">
               ¿No sabes cuál elegir?
               <br />
               <span className="text-gold-gradient italic">Te ayudamos en 30 segundos.</span>
@@ -44,11 +44,11 @@ export function QuizCta() {
               Hacer el test <ArrowRight className="size-4 transition group-hover:translate-x-1" />
             </Link>
           </div>
-          <div className="relative flex h-72 items-end justify-center sm:h-96">
+          <div className="relative flex h-56 items-end justify-center overflow-hidden sm:h-96">
             {bottles.map((b, i) => (
               <motion.div
                 key={b.id}
-                className="-mx-6 w-40 sm:-mx-4 sm:w-48"
+                className="-mx-5 w-28 sm:-mx-4 sm:w-48"
                 style={{ zIndex: i === 2 ? 5 : 5 - Math.abs(2 - i) }}
                 initial={{ y: 60, opacity: 0 }}
                 whileInView={{ y: Math.abs(2 - i) * 22, opacity: 1 }}
@@ -76,7 +76,7 @@ export function LookTeaser() {
       <div className="grid items-center gap-14 lg:grid-cols-[1fr_1.1fr]">
         <motion.div {...reveal}>
           <p className="eyebrow">Exclusivo de la web</p>
-          <h2 className="mt-5 font-[family-name:var(--font-display)] text-5xl leading-[1] sm:text-6xl">
+          <h2 className="mt-5 font-[family-name:var(--font-display)] text-4xl leading-[1.05] sm:text-6xl">
             Arma tu <span className="text-gold-gradient italic">look completo</span>
           </h2>
           <p className="mt-6 max-w-md text-muted">
@@ -120,7 +120,7 @@ export function EditionsExplainer() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <motion.div {...reveal} className="mx-auto max-w-2xl text-center">
           <p className="eyebrow">Transparencia total</p>
-          <h2 className="mt-5 font-[family-name:var(--font-display)] text-5xl sm:text-6xl">
+          <h2 className="mt-5 font-[family-name:var(--font-display)] text-4xl sm:text-6xl">
             Sabes <span className="text-gold-gradient italic">exactamente</span> lo que compras
           </h2>
           <p className="mt-5 text-muted">Cada producto está marcado con su tipo para que elijas según tu presupuesto.</p>
@@ -184,7 +184,7 @@ export function InstagramFeed() {
       <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
         <div>
           <p className="eyebrow">@{instagram}</p>
-          <h2 className="mt-4 font-[family-name:var(--font-display)] text-5xl sm:text-6xl">
+          <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl sm:text-6xl">
             Síguenos en <span className="text-gold-gradient italic">Instagram</span>
           </h2>
         </div>
@@ -235,7 +235,7 @@ export function HowToBuy() {
   return (
     <section className="border-t border-line bg-coal py-24 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <motion.h2 {...reveal} className="text-center font-[family-name:var(--font-display)] text-5xl sm:text-6xl">
+        <motion.h2 {...reveal} className="text-center font-[family-name:var(--font-display)] text-4xl sm:text-6xl">
           Comprar es <span className="text-gold-gradient italic">así de fácil</span>
         </motion.h2>
         <div className="relative mt-16 grid gap-10 md:grid-cols-3">
