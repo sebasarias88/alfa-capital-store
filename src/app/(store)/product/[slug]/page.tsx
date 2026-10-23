@@ -15,6 +15,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: product.name,
     description: product.description,
     alternates: { canonical: `/product/${product.slug}` },
+    openGraph: {
+      title: `${product.name} · Alfa Capital`,
+      description: product.description,
+      url: `/product/${product.slug}`,
+      images: [{ url: "/opengraph-image.jpg", width: 1200, height: 630, alt: "Alfa Capital" }],
+    },
   };
 }
 
