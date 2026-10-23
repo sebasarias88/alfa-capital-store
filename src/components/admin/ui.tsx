@@ -8,7 +8,7 @@ export function PageHeader({ title, subtitle, children }: { title: string; subti
   return (
     <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
       <div>
-        <h1 className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl">{title}</h1>
+        <h1 className="font-[family-name:var(--font-display)] text-3xl sm:text-5xl">{title}</h1>
         {subtitle && <p className="mt-1 text-sm text-muted">{subtitle}</p>}
       </div>
       {children && <div className="flex flex-wrap gap-2">{children}</div>}
@@ -33,14 +33,14 @@ export function Card({ title, action, className, children }: { title?: string; a
 export function StatCard({ label, value, delta, icon: Icon, hint }: { label: string; value: string; delta?: number; icon: LucideIcon; hint?: string }) {
   const up = (delta ?? 0) >= 0;
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-line bg-coal p-5">
+    <div className="relative overflow-hidden rounded-2xl border border-line bg-coal p-4 sm:p-5">
       <div className="flex items-start justify-between">
         <p className="text-xs font-medium text-muted">{label}</p>
         <span className="grid size-9 place-items-center rounded-xl bg-gold/10 text-gold">
           <Icon className="size-[18px]" />
         </span>
       </div>
-      <p className="mt-3 font-[family-name:var(--font-display)] text-3xl text-cream sm:text-4xl">{value}</p>
+      <p className="mt-3 font-[family-name:var(--font-display)] text-2xl break-words text-cream sm:text-4xl">{value}</p>
       <div className="mt-2 flex items-center gap-2 text-xs">
         {delta !== undefined && (
           <span className={cn("inline-flex items-center gap-0.5 font-semibold", up ? "text-success" : "text-danger")}>
