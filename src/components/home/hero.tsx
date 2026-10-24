@@ -11,19 +11,20 @@ const hero = SEED_PRODUCTS.find((p) => p.slug === "noir-absolu")!;
 const watch = SEED_PRODUCTS.find((p) => p.slug === "capital-chrono-42")!;
 const glasses = SEED_PRODUCTS.find((p) => p.slug === "aviator-gold")!;
 
-const words = ["El", "arte", "de"];
+/** CSS entrance delay — runs as soon as the HTML arrives, without waiting for JavaScript */
+const delay = (ms: number) => ({ animationDelay: `${ms}ms` });
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], [0, 160]);
-  const rotate = useTransform(scrollYProgress, [0, 1], [0, -14]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.82]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, 140]);
+  const rotate = useTransform(scrollYProgress, [0, 1], [0, -12]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.85]);
   const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-  const watchY = useTransform(scrollYProgress, [0, 1], [0, -120]);
-  const glassesY = useTransform(scrollYProgress, [0, 1], [0, 220]);
+  const watchY = useTransform(scrollYProgress, [0, 1], [0, -110]);
+  const glassesY = useTransform(scrollYProgress, [0, 1], [0, 180]);
 
-  // Subtle tilt that follows the pointer
+  // Tilt that follows the mouse (desktop only — skipped on touch screens)
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const tiltX = useSpring(useTransform(my, [-0.5, 0.5], [8, -8]), { stiffness: 120, damping: 18 });
@@ -33,64 +34,47 @@ export function Hero() {
     <section
       ref={ref}
       onPointerMove={(e) => {
+        if (e.pointerType !== "mouse") return;
         const r = e.currentTarget.getBoundingClientRect();
         mx.set((e.clientX - r.left) / r.width - 0.5);
         my.set((e.clientY - r.top) / r.height - 0.5);
       }}
       className="grain relative -mt-16 overflow-hidden pt-16 sm:-mt-20 sm:pt-20"
     >
-      {/* ambient light */}
+      {/* ambient light (gradients instead of blur filters) */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="absolute top-[-20%] right-[-10%] size-[70vw] max-w-[900px] rounded-full bg-gold/10 blur-[120px]" />
-        <div className="absolute bottom-[-30%] left-[-20%] size-[60vw] max-w-[700px] rounded-full bg-gold-deep/10 blur-[120px]" />
+        <div className="glow-gold absolute top-[-25%] right-[-25%] size-[110vw] max-w-[1100px]" />
+        <div className="glow-gold absolute bottom-[-35%] left-[-30%] size-[90vw] max-w-[800px] opacity-60" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(212,175,106,0.05)_1px,transparent_1px)] bg-[size:120px_100%]" />
       </div>
 
       <div className="relative mx-auto grid min-h-[calc(100svh-6rem)] max-w-7xl items-center gap-6 px-4 pb-16 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:gap-0">
         <motion.div style={{ opacity: fade }} className="relative z-10 pt-6 lg:pt-0">
-          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="eyebrow flex items-center gap-3">
+          <p className="eyebrow flex animate-rise items-center gap-3" style={delay(50)}>
             <span className="h-px w-10 bg-gold" /> Armenia · Quindío
-          </motion.p>
+          </p>
           <h1 className="mt-6 font-[family-name:var(--font-display)] text-[clamp(3.2rem,9vw,7.5rem)] leading-[0.92] font-medium tracking-tight">
-            {words.map((w, i) => (
-              <motion.span
-                key={w}
-                className="mr-[0.22em] inline-block"
-                initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                transition={{ delay: 0.2 + i * 0.12, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              >
-                {w}
-              </motion.span>
-            ))}
+            <span className="inline-block animate-rise" style={delay(120)}>
+              El arte de
+            </span>
             <br />
-            <motion.span
-              className="inline-block animate-shimmer text-gold-gradient italic"
-              initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ delay: 0.6, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            >
-              dejar huella
-            </motion.span>
+            <span className="inline-block animate-rise" style={delay(280)}>
+              <span className="animate-shimmer text-gold-gradient italic">dejar huella</span>
+            </span>
           </h1>
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9 }}
-            className="mt-8 max-w-md text-base leading-relaxed text-muted sm:text-lg"
-          >
+          <p className="mt-8 max-w-md animate-rise text-base leading-relaxed text-muted sm:text-lg" style={delay(420)}>
             Perfumes originales e inspiraciones 1.1, relojes y gafas para dama y caballero. Te lo llevamos{" "}
             <span className="text-cream">gratis</span> a cualquier lugar de Armenia.
-          </motion.p>
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.05 }} className="mt-10 flex flex-wrap gap-3">
+          </p>
+          <div className="mt-10 flex animate-rise flex-wrap gap-3" style={delay(540)}>
             <Link href="/catalog" className="btn-gold group px-7 py-4">
               Ver catálogo <ArrowRight className="size-4 transition group-hover:translate-x-1" />
             </Link>
             <Link href="/quiz" className="btn-ghost px-7 py-4">
               <Sparkles className="size-4 text-gold" /> Encuentra tu aroma
             </Link>
-          </motion.div>
-          <motion.dl initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.3 }} className="mt-14 hidden max-w-md grid-cols-3 gap-6 border-t border-line pt-6 sm:grid">
+          </div>
+          <dl className="mt-14 hidden max-w-md animate-fade grid-cols-3 gap-6 border-t border-line pt-6 sm:grid" style={delay(700)}>
             {[
               ["+20", "Fragancias"],
               ["24h", "Entrega local"],
@@ -102,12 +86,12 @@ export function Hero() {
                 <dd className="mt-1 text-[11px] tracking-[0.2em] text-muted uppercase">{l}</dd>
               </div>
             ))}
-          </motion.dl>
+          </dl>
         </motion.div>
 
         {/* product composition */}
-        <div className="relative mx-auto aspect-square w-full max-w-[360px] [perspective:1200px] sm:max-w-[560px]">
-          <motion.svg viewBox="0 0 400 400" className="absolute inset-0 h-full w-full animate-spin-slow text-gold/70" aria-hidden>
+        <div className="relative mx-auto aspect-square w-full max-w-[360px] animate-fade [perspective:1200px] sm:max-w-[560px]" style={delay(150)}>
+          <svg viewBox="0 0 400 400" className="absolute inset-0 h-full w-full animate-spin-slow text-gold/70 will-change-transform" aria-hidden>
             <defs>
               <path id="ring" d="M200 200 m-170 0 a170 170 0 1 1 340 0 a170 170 0 1 1 -340 0" />
             </defs>
@@ -116,33 +100,23 @@ export function Hero() {
             <text fontSize="11" letterSpacing="6" fill="currentColor" fontFamily="var(--font-sans)">
               <textPath href="#ring">ALFA CAPITAL · PERFUMERÍA · RELOJES · GAFAS · ESTILO PARA DAMA Y CABALLERO ·</textPath>
             </text>
-          </motion.svg>
-          <motion.div
-            style={{ y: watchY }}
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.9, duration: 1 }}
-            className="absolute top-[6%] left-[-2%] w-[34%] -rotate-12"
-          >
-            <ProductArt art={watch.art} label={watch.name} />
+          </svg>
+          {/* static glow behind the bottle (replaces an animated drop-shadow filter) */}
+          <div aria-hidden className="glow-gold absolute inset-[12%]" />
+          <motion.div style={{ y: watchY }} className="absolute top-[6%] left-[-2%] w-[34%] will-change-transform">
+            <div className="animate-rise -rotate-12" style={delay(600)}>
+              <ProductArt art={watch.art} label={watch.name} />
+            </div>
           </motion.div>
-          <motion.div
-            style={{ y, rotate, scale, rotateX: tiltX, rotateY: tiltY }}
-            initial={{ opacity: 0, y: 80 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute inset-[10%] drop-shadow-[0_40px_80px_rgba(212,175,106,0.25)]"
-          >
-            <ProductArt art={hero.art} label={hero.name} />
+          <motion.div style={{ y, rotate, scale, rotateX: tiltX, rotateY: tiltY }} className="absolute inset-[10%] will-change-transform">
+            <div className="h-full w-full animate-rise" style={delay(250)}>
+              <ProductArt art={hero.art} label={hero.name} />
+            </div>
           </motion.div>
-          <motion.div
-            style={{ y: glassesY }}
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 1.1, duration: 1 }}
-            className="absolute right-[-4%] bottom-[2%] w-[44%] rotate-6"
-          >
-            <ProductArt art={glasses.art} label={glasses.name} />
+          <motion.div style={{ y: glassesY }} className="absolute right-[-4%] bottom-[2%] w-[44%] will-change-transform">
+            <div className="animate-rise rotate-6" style={delay(750)}>
+              <ProductArt art={glasses.art} label={glasses.name} />
+            </div>
           </motion.div>
         </div>
       </div>
