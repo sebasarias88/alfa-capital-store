@@ -136,3 +136,52 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* Scroll-driven animations: run by the browser itself (off the main  */
+/* thread), so they stay smooth on phones. Only active where supported */
+/* ------------------------------------------------------------------ */
+@keyframes sd-hero-bottle {
+  to { translate: 0 140px; rotate: -12deg; scale: 0.88; }
+}
+@keyframes sd-hero-watch {
+  to { translate: 0 -110px; }
+}
+@keyframes sd-hero-glasses {
+  to { translate: 0 180px; }
+}
+@keyframes sd-fade-out {
+  to { opacity: 0; }
+}
+@keyframes sd-grow-x {
+  from { scale: 0 1; }
+  to { scale: 1 1; }
+}
+
+@supports (animation-timeline: scroll()) {
+  .sd-hero-bottle,
+  .sd-hero-watch,
+  .sd-hero-glasses,
+  .sd-hero-fade {
+    animation-duration: auto;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: scroll(root);
+    animation-range: 0 100vh;
+  }
+  .sd-hero-bottle { animation-name: sd-hero-bottle; }
+  .sd-hero-watch { animation-name: sd-hero-watch; }
+  .sd-hero-glasses { animation-name: sd-hero-glasses; }
+  .sd-hero-fade { animation-name: sd-fade-out; animation-range: 0 80vh; }
+
+  .sd-worlds { view-timeline-name: --worlds; }
+  .sd-worlds-progress {
+    animation: sd-grow-x linear both;
+    animation-timeline: --worlds;
+    animation-range: contain 0% contain 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sd-hero-bottle, .sd-hero-watch, .sd-hero-glasses, .sd-hero-fade, .sd-worlds-progress { animation: none !important; }
+}
