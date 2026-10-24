@@ -28,7 +28,7 @@ export function QuizCta() {
         {...reveal}
         className="grain relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] border border-gold/20 bg-gradient-to-br from-raised via-surface to-coal px-5 py-12 sm:px-14 sm:py-20"
       >
-        <div aria-hidden className="absolute -top-24 -right-24 size-96 rounded-full bg-gold/15 blur-[100px]" />
+        <div aria-hidden className="absolute -top-24 -right-24 size-96 glow-gold" />
         <div className="relative grid grid-cols-1 items-center gap-10 lg:grid-cols-2 [&>*]:min-w-0">
           <div>
             <p className="eyebrow flex items-center gap-2"><Sparkles className="size-3.5" /> Asesor de aromas</p>
@@ -262,7 +262,7 @@ export function FinalCta() {
   const phone = useAppStore((s) => s.settings.whatsapp);
   return (
     <section className="relative overflow-hidden px-4 py-28 text-center sm:py-36">
-      <div aria-hidden className="absolute top-1/2 left-1/2 size-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold/10 blur-[120px]" />
+      <div aria-hidden className="absolute top-1/2 left-1/2 size-[600px] -translate-x-1/2 -translate-y-1/2 glow-gold" />
       <motion.div {...reveal} className="relative mx-auto max-w-3xl">
         <h2 className="font-[family-name:var(--font-display)] text-[clamp(3rem,8vw,6.5rem)] leading-[0.95]">
           Tu próximo aroma

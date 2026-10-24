@@ -32,7 +32,7 @@ export default function AdminLoginPage() {
 
   return (
     <div className="grain relative grid min-h-dvh place-items-center overflow-hidden px-4">
-      <div aria-hidden className="absolute top-1/2 left-1/2 size-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold/10 blur-[140px]" />
+      <div aria-hidden className="absolute top-1/2 left-1/2 size-[700px] -translate-x-1/2 -translate-y-1/2 glow-gold" />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
