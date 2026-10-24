@@ -93,7 +93,7 @@ export function ScentQuiz() {
 
   return (
     <div className="relative mx-auto min-h-[80svh] max-w-5xl px-4 pt-10 pb-24 sm:px-6 sm:pt-16">
-      <div aria-hidden className="pointer-events-none absolute top-0 left-1/2 size-[500px] -translate-x-1/2 rounded-full bg-gold/10 blur-[120px]" />
+      <div aria-hidden className="pointer-events-none absolute top-0 left-1/2 size-[500px] -translate-x-1/2 glow-gold" />
       <div className="relative text-center">
         <p className="eyebrow flex items-center justify-center gap-2"><Sparkles className="size-3.5" /> Asesor de aromas</p>
         {!done && (
