@@ -7,6 +7,7 @@ import { ArrowUpRight } from "lucide-react";
 import { ProductArt } from "@/components/product-art";
 import { SEED_PRODUCTS } from "@/data/products";
 import { cn } from "@/lib/format";
+import { useScrollMode } from "@/lib/use-scroll-mode";
 import type { Category } from "@/lib/types";
 
 const WORLDS: { category: Category; title: string; italic: string; text: string; slug: string; count: string }[] = [
@@ -45,6 +46,7 @@ const products = WORLDS.map((w) => SEED_PRODUCTS.find((p) => p.slug === w.slug)!
 export function WorldsScroll() {
   const ref = useRef<HTMLElement>(null);
   const [active, setActive] = useState(0);
+  const mode = useScrollMode();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
   useMotionValueEvent(scrollYProgress, "change", (v) => {
@@ -53,7 +55,7 @@ export function WorldsScroll() {
   });
 
   return (
-    <section ref={ref} aria-label="Nuestras líneas" className="relative h-[300svh] bg-coal">
+    <section ref={ref} aria-label="Nuestras líneas" className="sd-worlds relative h-[300svh] bg-coal">
       <div className="sticky top-0 flex h-svh items-center overflow-hidden">
         {/* background glow + giant word, one per world, cross-faded */}
         <div aria-hidden className="absolute inset-0">
@@ -76,7 +78,16 @@ export function WorldsScroll() {
                 </span>
               ))}
               <span className="relative ml-2 h-px flex-1 bg-line">
-                <motion.span style={{ scaleX: scrollYProgress }} className="absolute inset-0 origin-left bg-gold" />
+                {mode === "css" ? (
+                  <span className="sd-worlds-progress absolute inset-0 origin-left bg-gold" />
+                ) : mode === "js" ? (
+                  <motion.span style={{ scaleX: scrollYProgress }} className="absolute inset-0 origin-left bg-gold" />
+                ) : (
+                  <span
+                    className="absolute inset-0 origin-left bg-gold transition-[scale] duration-500 ease-out"
+                    style={{ scale: `${(active + 1) / WORLDS.length} 1` }}
+                  />
+                )}
               </span>
             </div>
 
